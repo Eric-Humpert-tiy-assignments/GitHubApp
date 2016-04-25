@@ -6,15 +6,25 @@ if (this.GitHubRepBrowser === undefined) this.GitHubRepBrowser = {};
   var list;
   var input;
   var data;
+  var messaging;
 
   function listBuilder(arr) {
     for (var val of arr){
       var li = document.createElement('li');
       list.appendChild(li);
+
       var anchor = document.createElement('a');
       anchor.href = val.html_url;
       anchor.textContent = val.full_name;
       li.appendChild(anchor);
+
+      var forks = document.createElement('p');
+      forks.textContent = val.forks;
+      li.appendChild(forks);
+
+      var language = document.createElement('p');
+      language.textContent = val.language;
+      li.appendChild(language);
     }
   }
 
@@ -26,6 +36,9 @@ if (this.GitHubRepBrowser === undefined) this.GitHubRepBrowser = {};
         result.push(val);
         console.log(result.length);
       }
+    }
+    if (result.length === 0) { 
+      messaging.textContent = "Don't use those letters!";
     }
     list.textContent = '';
     listBuilder(result);
@@ -40,7 +53,7 @@ if (this.GitHubRepBrowser === undefined) this.GitHubRepBrowser = {};
     console.log(data);
     list = document.querySelector("#search-results");
     listBuilder(data.items);
-
+    messaging = document.querySelector('#messaging');
 
     button.addEventListener('click', listFilter);
   }
